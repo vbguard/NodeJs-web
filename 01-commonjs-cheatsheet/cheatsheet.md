@@ -1,23 +1,36 @@
 # Default export
 
 ```js
+// moduleA.js
 const name = "Mango";
 
 module.exports = name;
 
-const name = require("...");
+// moduleB.js
+const name = require("./path/to/moduleA");
 ```
 
 # Named export
 
 ```js
+// moduleA.js
 const name = "Mango";
+const email = "mango@mail.com";
 
 module.exports = {
-  name
+  name,
+  email
 };
 
-const { name } = require("...");
+// moduleB.js
+const { name, email } = require("./path/to/moduleA");
+```
+
+```js
+NativeModule.wrapper = [
+  "(function (exports, require, module, __filename, __dirname) { ",
+  "\n});"
+];
 ```
 
 # exports vs module.exports
