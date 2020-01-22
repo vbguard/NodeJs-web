@@ -1,35 +1,36 @@
-function sum(a, b) {
-  console.log(a + b);
+function sum(args) {
+  console.log("args :", args);
+  console.log(args.a + args.b);
 }
 
-function sub(a, b) {
-  console.log(a - b);
+function sub(args) {
+  console.log(args.a - args.b);
 }
 
-function mul(a, b) {
-  console.log(a * b);
+function mul(args) {
+  console.log(args.a * args.b);
 }
 
-function div(a, b) {
-  console.log(a / b);
+function div(args) {
+  console.log(args.a / args.b);
 }
 
-function calc(type, ...args) {
+function calc(type, args) {
   switch (type) {
     case "sum":
-      sum(...args);
+      sum(args);
       break;
 
     case "sub":
-      sub(...args);
+      sub(args);
       break;
 
     case "mul":
-      mul(...args);
+      mul(args);
       break;
 
     case "div":
-      div(...args);
+      div(args);
       break;
 
     default:
