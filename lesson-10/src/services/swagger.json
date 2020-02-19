@@ -1,0 +1,515 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "API",
+    "description": "A minimal and easy API",
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "basePath": "/api",
+  "schemes": ["https", "http"],
+  "servers": [
+    {
+      "url": "http://localhost:5002/api",
+      "description": "The production API server"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Public",
+      "description": "NoProtected routes"
+    },
+    {
+      "name": "Protected",
+      "description": "Protected routes"
+    }
+  ],
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+  "securityDefinitions": {},
+  "paths": {
+    "/auth/login": {
+      "post": {
+        "tags": ["Public"],
+        "summary": "route for login user in system",
+        "requestBody": {
+          "description": "ZZ",
+          "required": ["email", "password"],
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              },
+              "example": {
+                "email": "email@email.com",
+                "password": "password"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BAD",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Invalid Password"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "BAD",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "oneOf": [
+                    {
+                      "properties": {
+                        "success": {
+                          "type": "boolean",
+                          "example": false
+                        },
+                        "message": {
+                          "type": "string",
+                          "example": "Field password empty"
+                        }
+                      }
+                    },
+                    {
+                      "properties": {
+                        "success": {
+                          "type": "boolean",
+                          "example": false
+                        },
+                        "message": {
+                          "type": "string",
+                          "example": "Field nickname empty"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/register": {
+      "post": {
+        "tags": ["Public"],
+        "summary": "route for register user in system",
+        "requestBody": {
+          "description": "zz",
+          "required": ["email", "password"],
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterRequest"
+              },
+              "example": {
+                "email": "testovoy@gmail.com",
+                "password": "password",
+                "name": "Testovoy",
+                "age": 23,
+                "avatar": "https://gravatar.com/asgklasgw",
+                "isChild": true
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegisterResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BAD",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Invalid Password"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "BAD",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "oneOf": [
+                    {
+                      "properties": {
+                        "success": {
+                          "type": "boolean",
+                          "example": false
+                        },
+                        "message": {
+                          "type": "string",
+                          "example": "Field password empty"
+                        }
+                      }
+                    },
+                    {
+                      "properties": {
+                        "success": {
+                          "type": "boolean",
+                          "example": false
+                        },
+                        "message": {
+                          "type": "string",
+                          "example": "Field nickname empty"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/logout": {
+      "post": {
+        "tags": ["Protected"],
+        "summary": "Logout user from system",
+        "security": ["bearerAuth"],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "JWT",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "$ref": "#/components/securitySchemes/bearerAuth"
+            },
+            "style": "simple"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "BAD",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Invalid Password"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "api_key": {
+        "type": "scheme",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      },
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "LoginRequest": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "required": true
+          },
+          "password": {
+            "type": "string",
+            "maxLength": 16,
+            "minLength": 6,
+            "required": true
+          }
+        },
+        "required": ["email", "password"],
+        "example": {
+          "email": "email@email.com",
+          "password": "password"
+        }
+      },
+      "RegisterRequest": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "password": {
+            "type": "string"
+          },
+          "name": { "type": "sting" },
+          "age": {
+            "type": "number"
+          },
+          "avatar": {
+            "type": "string",
+            "format": "uri"
+          },
+          "isChild": {
+            "type": "boolean"
+          }
+        },
+        "required": ["email", "password", "name", "age", "avatar", "isChild"],
+        "example": {
+          "email": "testovoy@gmail.com",
+          "password": "password",
+          "name": "Testovoy",
+          "age": 23,
+          "avatar": "https://gravatar.com/asgklasgw",
+          "isChild": true
+        }
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "age": {
+            "type": "number"
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "isChild": {
+            "type": "boolean"
+          },
+          "scores": {
+            "type": "number"
+          }
+        }
+      },
+      "GetTasks": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "default": "success",
+            "example": "success"
+          },
+          "tasks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Task"
+            }
+          }
+        }
+      },
+      "GetGoals": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "default": "success",
+            "example": "success"
+          },
+          "tasks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Goal"
+            }
+          }
+        }
+      },
+      "Task": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "description": { "type": "string" },
+          "_id": { "type": "string", "format": "uuid" },
+          "points": { "type": "number" }
+        }
+      },
+      "Goal": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "points": {
+            "type": "number",
+            "format": "uuid"
+          }
+        }
+      },
+      "TaskCreate": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "description": { "type": "string" },
+          "dates": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        }
+      },
+      "LoginResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "default": "success",
+            "example": "success"
+          },
+          "user": {
+            "type": "object",
+            "properties": {
+              "userData": {
+                "$ref": "#/components/schemas/User"
+              },
+              "token": {
+                "type": "string",
+                "example": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ZDNhMTM4NmIxZTg1NTdjZjIzNjY3ODEiLCJpYXQiOjE1NjQwODcxNzV9.jSdzHuBSf4yKS6t7zwt0AoQIchHlz73JDOjfHVdbTBk"
+              },
+              "childs": {},
+              "tasks": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Task"
+                }
+              },
+              "goals": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Goal"
+                }
+              }
+            }
+          }
+        }
+      },
+      "RegisterResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "default": "success",
+            "example": "success"
+          },
+          "user": {
+            "type": "object",
+            "properties": {
+              "userData": {
+                "$ref": "#/components/schemas/User"
+              },
+              "token": {
+                "type": "string",
+                "example": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ZDNhMTM4NmIxZTg1NTdjZjIzNjY3ODEiLCJpYXQiOjE1NjQwODcxNzV9.jSdzHuBSf4yKS6t7zwt0AoQIchHlz73JDOjfHVdbTBk"
+              },
+              "childs": {
+                "type": "array",
+                "items": {
+                  "type": "object"
+                }
+              },
+              "tasks": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Task"
+                }
+              },
+              "goals": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Goal"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "responses": {
+      "UnauthorizedError": {
+        "description": "Access token is missing or invalid"
+      }
+    }
+  }
+}
